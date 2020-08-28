@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { InputLabel, MenuItem, FormControl, Select} from '@material-ui/core';
+import { MenuItem, FormControl, Select} from '@material-ui/core';
 import { List, ListItem, ListItemText} from '@material-ui/core';
 import { AppBar, Toolbar, Typography, Grid, Divider, CircularProgress, Paper } from '@material-ui/core';
 import { getCharacters, getMovies } from '../actions';
