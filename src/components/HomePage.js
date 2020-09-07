@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { connect } from 'react-redux';
 import moment from 'moment';
@@ -60,23 +60,8 @@ const HomePage = (props) => {
 
   const { characterList, moviesList, loading } = props;
 
-  useEffect(() => {
-    props.getCharacters();
-  }, []);
-
-  useEffect(() => {
-    props.getMovies(character);
-  }, [character]);
-
-  useEffect(() => {
-    getLastMovie();
-  }, [props.moviesList]);
-
-  const handleChange = (event) => {
-    setCharacter(event.target.value);
-  };
-
-  const getLastMovie = () => {
+  const getLastMovie = useCallback(
+    () => {
     let sortedList = [];
     if(moviesList.length > 0) {
       sortedList =  moviesList.reduce((a, b) => {
@@ -84,7 +69,26 @@ const HomePage = (props) => {
         });
       setLastMovie(sortedList.title + ' ('+ moment(sortedList.release_date).format('YYYY')+')');
       }
-  }
+  }, [moviesList]);
+
+  useEffect(() => {
+    const myProp = props.getCharacters;
+    myProp();
+  }, [props.getCharacters]);
+
+  useEffect(() => {
+    const movieProp = props.getMovies;
+    movieProp(character);
+  }, [props.getMovies, character]);
+
+  useEffect(() => {
+    const lastMovieProp = getLastMovie;
+    lastMovieProp();
+  }, [getLastMovie]);
+
+  const handleChange = (event) => {
+    setCharacter(event.target.value);
+  };
 
   return (
     <React.Fragment>
